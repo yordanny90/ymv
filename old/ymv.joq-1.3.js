@@ -4,10 +4,15 @@
  * Fecha: 20161121
  * Autor: Yordanny Mejías V. yordanny90@gmail.com
  */
-$joq=(function($,$joq){
+$joq=(function($joq){
 	$joq=function(o){
 		if(this.constructor!=$joq) return new $joq(o);
 		this.o=o;
+	};
+	$joq.each=function(o,fn){
+		for(var i in o){
+			fn(i,o[i],o);
+		};
 	};
 	/**
 	 * Devuelve un array de objetos listos para ser enviados por GET o por POST
@@ -21,7 +26,7 @@ $joq=(function($,$joq){
 		if(typeof v=='string' || typeof v=='number' || typeof v=='boolean' || (typeof v=='object' && (v.constructor==File))){
 			r.push({name:n,value:v});
 		}else if(typeof v=='object'){
-			$.each(v,function(i,e){
+			$joq.each(v,function(i,e){
 				r=r.concat($joq.serialize(e,n?n+'['+i+']':i));
 			});
 		}
@@ -34,7 +39,7 @@ $joq=(function($,$joq){
 	 * @returns {Array}
 	 */
 	$joq.fn.serialize=function(n){
-		return $joq.serialize(this.o,n);
+		return $joq.serialize(this.val(),n);
 	};
 	/**
 	 * Convierte un array de objetos listos para ser enviados por GET o por POST en un objeto de javascript
@@ -43,7 +48,7 @@ $joq=(function($,$joq){
 	 */
 	$joq.fn.deserialize=function(s){
 		var t=this;
-		$.each(s,function(i,e){
+		$joq.each(s,function(i,e){
 			if(e && typeof e=='object' && typeof e.name=='string'){
 				if(e.name.substring(e.name.length-2)=='[]')
 					t.add(e.name.substring(0,e.name.length-2).replace(/\]/g,''),e.value,'[');
@@ -67,9 +72,9 @@ $joq=(function($,$joq){
 	 * @returns {type}
 	 */
 	$joq.fn.get=function(k,split){
-		var t=this.o;
+		var t=this.val();
 		if(typeof split!='string') split='.';
-		$.each(k.split(split),function(i,e){
+		$joq.each(k.split(split),function(i,e){
 			if(t && typeof t=='object'){
 				t=t[e];
 			}else{
@@ -88,10 +93,10 @@ $joq=(function($,$joq){
 	 * @param {type} split Separador. Default="."
 	 */
 	$joq.fn.add=function(k,v,split){
-		var t=this.o;
+		var t=this.val();
 		if(typeof split!='string') split='.';
 		var s=k.split(split);
-		$.each(s,function(i,e){
+		$joq.each(s,function(i,e){
 			if(t){
 				if(s.length-1==i){
 					if(typeof t[e]=='undefined' || t[e]==null){
@@ -115,10 +120,10 @@ $joq=(function($,$joq){
 	 * @param {type} split Separador. Default="."
 	 */
 	$joq.fn.set=function(k,v,split){
-		var t=this.o;
+		var t=this.val();
 		if(typeof split!='string') split='.';
 		var s=k.split(split);
-		$.each(s,function(i,e){
+		$joq.each(s,function(i,e){
 			if(t){
 				if(s.length-1==i){
 					t[e]=v;
@@ -136,11 +141,11 @@ $joq=(function($,$joq){
 	 * @param {type} split Separador. Default="."
 	 */
 	$joq.fn.unset=function(k,split){
-		var t=this.o;
+		var t=this.val();
 		if(typeof split!='string') split='.';
 		var s=k.split(split);
 		var d=false;
-		$.each(s,function(i,e){
+		$joq.each(s,function(i,e){
 			if(t){
 				if(s.length-1==i){
 					delete t[e];
@@ -162,12 +167,12 @@ $joq=(function($,$joq){
 	 * @returns {$joq}
 	 */
 	$joq.fn.select=function(k,v,f){
-		var o=this.o;
+		var o=this.val();
 		if(typeof f!='function') f=function(){return true};
 		if(typeof v!='function') v=function(o,i){return o[i]};
 		if(typeof k!='function') k=function(o,i){return i};
 		var n=new Object();
-		Object.keys(o).filter(function(i){
+		$joq.each(o,function(i){
 			if(f(o,i))
 				n[k(o,i)]=v(o,i);
 		});
@@ -209,12 +214,12 @@ $joq=(function($,$joq){
 	 */
 	$joq.fn.update=function(s0,k,v,f){
 		if(!s0 || typeof s0!='object') return this;
-		var o=this.o;
+		var o=this.val();
 		if(s0.constructor==$joq) var s=s0.val(); else var s=s0;
 		if(typeof f!='function') f=function(o,s,i){return typeof s[i]!='undefined'};
 		if(typeof v!='function') v=function(o,s,i){return s[i]};
 		if(typeof k!='function') k=function(o,s,i){return i};
-		Object.keys(o).filter(function(i){
+		$joq.each(o,function(i){
 			if(f(o,s,i))
 				o[k(o,s,i)]=v(o,s,i);
 		});
@@ -230,12 +235,12 @@ $joq=(function($,$joq){
 	 */
 	$joq.fn.insert=function(s0,k,v,f){
 		if(!s0 || typeof s0!='object') return this;
-		var o=this.o;
+		var o=this.val();
 		if(s0.constructor==$joq) var s=s0.val(); else var s=s0;
 		if(typeof f!='function') f=function(){return true};
 		if(typeof v!='function') v=function(o,s,i){return s[i]};
 		if(typeof k!='function') k=function(o,s,i){return i};
-		Object.keys(s).filter(function(i){
+		$joq.each(s,function(i){
 			if(typeof o[i]=='undefined' && f(o,s,i))
 				o[k(o,s,i)]=v(o,s,i);
 		});
@@ -250,11 +255,11 @@ $joq=(function($,$joq){
 	 */
 	$joq.fn.delete=function(s0,k,f){
 		if(!s0 || typeof s0!='object') return this;
-		var o=this.o;
+		var o=this.val();
 		if(s0.constructor==$joq) var s=s0.val(); else var s=s0;
 		if(typeof f!='function') f=function(){return true};
 		if(typeof k!='function') k=function(o,s,i){return i};
-		Object.keys(s).filter(function(i){
+		$joq.each(s,function(i){
 			if(f(o,s,i))
 				delete o[k(o,s,i)];
 		});
@@ -269,16 +274,16 @@ $joq=(function($,$joq){
 	 */
 	$joq.fn.merge=function(s0,k,v,f){
 		if(!s0 || typeof s0!='object') return this;
-		var o=this.o;
+		var o=this.val();
 		if(s0.constructor==$joq) var s=s0.val(); else var s=s0;
 		if(typeof f!='function') f=function(o,s,i){return typeof s[i]!='undefined'};
 		if(typeof v!='function') v=function(o,s,i){return s[i]};
 		if(typeof k!='function') k=function(o,s,i){return i};
-		Object.keys(s).filter(function(i){
+		$joq.each(s,function(i){
 			if(f(o,s,i))
 				o[k(o,s,i)]=v(o,s,i);
 		});
 		return this;
 	};
 	return $joq;
-})(jQuery);
+})();
