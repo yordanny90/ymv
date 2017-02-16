@@ -1,0 +1,1381 @@
+<html>
+	<head>
+		<title>Documentación $JGO 1.4</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		<script src="ymv.joq-1.4.js"></script>
+		<script src="ymv.jgo-1.4.js"></script>
+		<script src="ymv.jquery_util-1.4.js"></script>
+		<script>
+			$(function($){
+				var $hash_ambit={};
+				window['@hash']=$hash_ambit;
+				$.onhashplus=function(hash,fn){
+					$hash_ambit[hash]=fn;
+				};
+				$.dohashplus=function(hash){
+					var v=hash.split('#');
+					v.shift();
+					if(v[0] && $hash_ambit[v[0]]){
+						$hash_ambit[v[0]](hash);
+					}
+				};
+			});
+			$(document).ready(function(){
+				$.onhashplus('as',function(hash){
+					console.log(hash);
+				});
+				$(window).off('hashchange.jhp').on('hashchange.jhp', function(event){
+					$.dohashplus(location.hash);
+				});
+				$(window).trigger('hashchange.jhp');
+			});
+		</script>
+		<style>
+			body{
+				background: #ececec;
+			}
+			hr{
+				border-top-color: black;
+			}
+			code[var]{
+				color: blue;
+				background-color: #dedff1;
+			}
+			code[param]{
+				color: white;
+				background-color: #9386f7;
+			}
+			code[value]{
+				color: white;
+				background-color: #6b899e;
+			}
+			code[attr]{
+				color: #105010;
+				background-color: #f4f9f1;
+			}
+			[params]::before{
+				content: "Parámetros";
+			}
+			[values]::before{
+				content: "Datos";
+			}
+			[type]::before{
+				content: "Tipo";
+			}
+			[content]::before{
+				content: "Contenido";
+			}
+			[tags]::before{
+				content: "Etiquetas";
+			}
+			[info]::before{
+				content: "Información";
+			}
+			[default]::before{
+				content: "Valor por defecto";
+			}
+		</style>
+	</head>
+	<body class="container">
+		<article>
+			<section>
+				<h1>JavaScript Get Object {$jgo}</h1>
+				<p>
+				</p>
+			</section>
+			<section>
+				<h3>Descripción</h3>
+				<p>Esta clase se encarga de la recolección de datos desde el documento, el envío de los datos al servidor, la recepción de la respuesta dada por el servidor, y la redistribución de información hacia el documento mediante la utilización de atributos.</p>
+			</section>
+			<section>
+				<h3>Atributos de ejecución</h3>
+				<p>
+					Estos son los atributos que ejecutan código durante el proceso de ejecución del $jgo
+				</p>
+				<ul>
+					<li>
+						<h4 id="-beforesend"><code attr><i dom></i>-<i ambit></i>-beforesend</code></h4>
+						<p><u content></u> JavaScript</p>
+						<p>Código JavaScript que se ejecuta antes de realizar la solicitud ajax.</p>
+						<u params></u>
+						<ul>
+							<li>
+								<h4><code param>jgo</code></h4>
+								<p><u type></u> {$jgo}</p>
+								<p>Objeto $jgo que se está ejecutando</p>
+							</li>
+							<li>
+								<h4><code param>xhr</code></h4>
+								<p><u type></u> Object</p>
+								<p>Objeto jQuery XMLHttpRequest</p>
+							</li>
+							<li>
+								<h4><code param>cfg</code></h4>
+								<p><u type></u> Object</p>
+								<p>Objeto de configuración ajax</p>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<h4 id="-success"><code attr><i dom></i>-<i ambit></i>-{status}</code></h4>
+						<p><u content></u> JavaScript</p>
+						<p>Código JavaScript que se ejecuta de acuerdo al valor del status de la solicitud ajax.</p>
+						<p>Los valores de {status} y sus respectivos atributos pueden ser:</p>
+						<dl>
+							<dt>success: </dt><dd><code attr><i dom></i>-<i ambit></i>-success</code> Si el status es success, se ejecutará uno de estos atributos: 
+								<a attr href="#-onjson"><i dom></i>-<i ambit></i>-onjson</a>
+								<a attr href="#-onxml"><i dom></i>-<i ambit></i>-onxml</a>
+								<a attr href="#-ontext"><i dom></i>-<i ambit></i>-ontext</a></dd>
+							<dt>notmodified: </dt><dd><code attr><i dom></i>-<i ambit></i>-notmodified</code></dd>
+							<dt>nocontent: </dt><dd><code attr><i dom></i>-<i ambit></i>-nocontent</code></dd>
+							<dt>error: </dt><dd><code attr><i dom></i>-<i ambit></i>-error</code></dd>
+							<dt>timeout: </dt><dd><code attr><i dom></i>-<i ambit></i>-timeout</code></dd>
+							<dt>abort: </dt><dd><code attr><i dom></i>-<i ambit></i>-abort</code></dd>
+							<dt>parsererror: </dt><dd><code attr><i dom></i>-<i ambit></i>-parsererror</code> Se ejecuta si la respuesta es un Objeto JSON pero ocurre un error en <a target="parseJSON" href="http://api.jquery.com/jQuery.parseJSON/">parseJSON</a></dd>
+						</dl>
+						<u params></u>
+						<ul>
+							<li>
+								<h4><code param>jgo</code></h4>
+								<p><u type></u> {$jgo}</p>
+								<p>Objeto $jgo que se está ejecutando</p>
+							</li>
+							<li>
+								<h4><code param>xhr</code></h4>
+								<p><u type></u> Object</p>
+								<p>Objeto jQuery XMLHttpRequest</p>
+							</li>
+							<li>
+								<h4><code param>status</code></h4>
+								<p><u type></u> String</p>
+								<p>Status de la respuesta ajax</p>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<h4 id="-onjson"><code attr><i dom></i>-<i ambit></i>-onjson</code></h4>
+						<p><u content></u> JavaScript</p>
+						<p>Se ejecuta cuando el status del ajax request es "success" y la respuesta es un objeto JSON</p>
+						<u params></u>
+						<ul>
+							<li>
+								<h4><code param>jgo</code></h4>
+								<p><u type></u> {$jgo}</p>
+								<p>Objeto $jgo que se está ejecutando</p>
+							</li>
+							<li>
+								<h4><code param>json</code></h4>
+								<p><u type></u> Object</p>
+								<p>Objeto JSON recibido como respuesta en el request</p>
+							</li>
+							<li>
+								<h4><code param>xhr</code></h4>
+								<p><u type></u> Object</p>
+								<p>Objeto jQuery XMLHttpRequest</p>
+							</li>
+							<li>
+								<h4><code param>status</code></h4>
+								<p><u type></u> Object</p>
+								<p>Status de la respuesta ajax</p>
+							</li>
+						</ul>
+						<p>Después de ejecutar este código, se ejecuta la función <a href="#setjson">setJSON</a></p>
+					</li>
+					<li>
+						<h4 id="-onxml"><code attr><i dom></i>-<i ambit></i>-onxml</code></h4>
+						<p><u content></u> JavaScript</p>
+						<p>Se ejecuta cuando el status del ajax request es "success" y la respuesta es un documento XML</p>
+						<u params></u>
+						<ul>
+							<li>
+								<h4><code param>jgo</code></h4>
+								<p><u type></u> {$jgo}</p>
+								<p>Objeto $jgo que se está ejecutando</p>
+							</li>
+							<li>
+								<h4><code param>xml</code></h4>
+								<p><u type></u> {document}</p>
+								<p>Documento XML recibido como respuesta en el request</p>
+							</li>
+							<li>
+								<h4><code param>xhr</code></h4>
+								<p><u type></u> Object</p>
+								<p>Objeto jQuery XMLHttpRequest</p>
+							</li>
+							<li>
+								<h4><code param>status</code></h4>
+								<p><u type></u> Object</p>
+								<p>Status de la respuesta ajax</p>
+							</li>
+						</ul>
+						<p>Después de ejecutar este código, se ejecuta la función <a href="#setxml">setXML</a></p>
+					</li>
+					<li>
+						<h4 id="-ontext"><code attr><i dom></i>-<i ambit></i>-ontext</code></h4>
+						<p><u content></u> JavaScript</p>
+						<p>Se ejecuta cuando el status del ajax request es "success" y la respuesta es texto</p>
+						<u params></u>
+						<ul>
+							<li>
+								<h4><code param>jgo</code></h4>
+								<p><u type></u> {$jgo}</p>
+								<p>Objeto $jgo que se está ejecutando</p>
+							</li>
+							<li>
+								<h4><code param>text</code></h4>
+								<p><u type></u> String</p>
+								<p>Texto recibido como respuesta en el request</p>
+							</li>
+							<li>
+								<h4><code param>xhr</code></h4>
+								<p><u type></u> Object</p>
+								<p>Objeto jQuery XMLHttpRequest</p>
+							</li>
+							<li>
+								<h4><code param>status</code></h4>
+								<p><u type></u> Object</p>
+								<p>Status de la respuesta ajax</p>
+							</li>
+						</ul>
+						<p>Después de ejecutar este código, se ejecuta la función <a href="#settext">setTEXT</a></p>
+					</li>
+					<li>
+						<h4 id="-complete"><code attr><i dom></i>-<i ambit></i>-complete</code></h4>
+						<p><u content></u> JavaScript</p>
+						<p>Se ejecuta cuando el ajax request se completa sin importar la respuesta o el status. Es el último atributo en ejecutarse durante el proceso</p>
+						<u params></u>
+						<ul>
+							<li>
+								<h4><code param>jgo</code></h4>
+								<p><u type></u> {$jgo}</p>
+								<p>Objeto $jgo que se está ejecutando</p>
+							</li>
+							<li>
+								<h4><code param>xhr</code></h4>
+								<p><u type></u> Object</p>
+								<p>Objeto jQuery XMLHttpRequest</p>
+							</li>
+							<li>
+								<h4><code param>status</code></h4>
+								<p><u type></u> Object</p>
+								<p>Status de la respuesta ajax</p>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<h4 id="-beginjson"><code attr><i dom></i>-<i ambit></i>-beginjson</code></h4>
+						<p><u content></u> JavaScript</p>
+						<p>Se ejecuta al inicio de la función de <a href="#setjson">setJSON</a>, antes de ejecutar los nodos JSON</p>
+						<u params></u>
+						<ul>
+							<li>
+								<h4><code param>jgo</code></h4>
+								<p><u type></u> {$jgo}</p>
+								<p>Objeto $jgo que se está ejecutando</p>
+							</li>
+							<li>
+								<h4><code param>json</code></h4>
+								<p><u type></u> Object</p>
+								<p>Objeto JSON recibido como parámetro de <a href="#setjson">setJSON</a></p>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<h4 id="-endjson"><code attr><i dom></i>-<i ambit></i>-endjson</code></h4>
+						<p><u content></u> JavaScript</p>
+						<p>Se ejecuta al final de la función de <a href="#setjson">setJSON</a>, después de ejecutar los nodos JSON</p>
+						<u params></u>
+						<ul>
+							<li>
+								<h4><code param>jgo</code></h4>
+								<p><u type></u> {$jgo}</p>
+								<p>Objeto $jgo que se está ejecutando</p>
+							</li>
+							<li>
+								<h4><code param>json</code></h4>
+								<p><u type></u> Object</p>
+								<p>Objeto JSON recibido como parámetro de <a href="#setjson">setJSON</a></p>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<h4 id="-beginxml"><code attr><i dom></i>-<i ambit></i>-beginxml</code></h4>
+						<p><u content></u> JavaScript</p>
+						<p>Se ejecuta al inicio de la función de <a href="#setxml">setXML</a>, antes de ejecutar los nodos XML</p>
+						<u params></u>
+						<ul>
+							<li>
+								<h4><code param>jgo</code></h4>
+								<p><u type></u> {$jgo}</p>
+								<p>Objeto $jgo que se está ejecutando</p>
+							</li>
+							<li>
+								<h4><code param>xml</code></h4>
+								<p><u type></u> {Document}</p>
+								<p>Documento XML recibido como parámetro de <a href="#setxml">setXML</a></p>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<h4 id="-endxml"><code attr><i dom></i>-<i ambit></i>-endxml</code></h4>
+						<p><u content></u> JavaScript</p>
+						<p>Se ejecuta al final de la función de <a href="#setxml">setXML</a>, después de ejecutar los nodos XML</p>
+						<u params></u>
+						<ul>
+							<li>
+								<h4><code param>jgo</code></h4>
+								<p><u type></u> {$jgo}</p>
+								<p>Objeto $jgo que se está ejecutando</p>
+							</li>
+							<li>
+								<h4><code param>xml</code></h4>
+								<p><u type></u> {Document}</p>
+								<p>Documento XML recibido como parámetro de <a href="#setxml">setXML</a></p>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<h4 id="-begintext"><code attr><i dom></i>-<i ambit></i>-begintext</code></h4>
+						<p><u content></u> JavaScript</p>
+						<p>Se ejecuta al inicio de la función de <a href="#settext">setTEXT</a>, antes de ejecutar los nodos TEXT</p>
+						<u params></u>
+						<ul>
+							<li>
+								<h4><code param>jgo</code></h4>
+								<p><u type></u> {$jgo}</p>
+								<p>Objeto $jgo que se está ejecutando</p>
+							</li>
+							<li>
+								<h4><code param>text</code></h4>
+								<p><u type></u> String</p>
+								<p>Texto recibido como parámetro de <a href="#settext">setTEXT</a></p>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<h4 id="-endtext"><code attr><i dom></i>-<i ambit></i>-endtext</code></h4>
+						<p><u content></u> JavaScript</p>
+						<p>Se ejecuta al final de la función de <a href="#settext">setTEXT</a>, después de ejecutar los nodos TEXT</p>
+						<u params></u>
+						<ul>
+							<li>
+								<h4><code param>jgo</code></h4>
+								<p><u type></u> {$jgo}</p>
+								<p>Objeto $jgo que se está ejecutando</p>
+							</li>
+							<li>
+								<h4><code param>text</code></h4>
+								<p><u type></u> String</p>
+								<p>Texto recibido como parámetro de <a href="#settext">setTEXT</a></p>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
+			<section>
+				<h3 id="nodosjson">Nodos de lectura</h3>
+				<p>
+					Son los nodos de los que se obtiene el data para el request.
+				</p>
+				<ul>
+					<li>
+						<h4 id="dom-name"><code attr><i dom></i>-name</code></h4>
+						<p><u content></u> String</p>
+						<p><u tags></u> <code>input</code> | <code>select</code> | <code>textarea</code></p>
+						<p>
+							Estos valores se agregan al <a href="#formdata">formData</a> del request de cualquier ámbito que se ejecute.<br>
+							Si el atributo tiene un valor, este se usa como <code var>name</code> del valor. De lo contrario se usará el valor del atributo <code>[name]</code>
+						</p>
+					</li>
+					<li>
+						<h4 id="-name"><code attr><i dom></i>-<i ambit></i>-name</code></h4>
+						<p><u content></u> String</p>
+						<p><u tags></u> <code>input</code> | <code>select</code> | <code>textarea</code></p>
+						<p>
+							Estos valores se agregan al <a href="#formdata">formData</a> del request del ámbito que se ejecuta.<br>
+							Si el atributo tiene un valor, este se usa como <code var>name</code> del valor. De lo contrario se usará el valor del atributo <code>[name]</code>
+						</p>
+					</li>
+					<li>
+						<h4 id="-form"><code attr><i dom></i>-<i ambit></i>-form</code></h4>
+						<p><u content></u> None</p>
+						<p>
+							Todos los <code>input</code>, <code>select</code> y <code>textarea</code> contenidos dentro de este nodo son agregados al <a href="#formdata">formData</a> del request del ámbito que se ejecuta.
+						</p>
+					</li>
+				</ul>
+			</section>
+			<section>
+				<h3>Nodos JSON</h3>
+				<p>Estos son los nodos que se ejecutan al llamar a la función setJSON</p>
+				<p>La <u>Llave $joq</u> es la dirección (separada por puntos) del valor que se busca en el objeto JSON.<br>
+					Si la llave es "persona.0.name", el valor obtenido será la propiedad name del primer valor en el arreglo persona, el cual está dentro del objeto JSON</p>
+				<ul>
+					<li>
+						<h4 id="-for"><code attr><i dom></i>-<i ambit></i>-for</code></h4>
+						<p><u content></u> Llave $joq</p>
+						<p>Recorre el valor obtenido, y por cada item, agrega código html al nodo actual.</p>
+						<p>Nodos dependientes:</p>
+						<ul>
+							<li>
+								<h4 id="-clear_for"><code attr><i dom></i>-<i ambit></i>-clear_for</code></h4>
+								<p><u content></u> None</p>
+								<p>Si el nodo tiene este atributo, el contenido del nodo se eliminará antes del recorrido.</p>
+							</li>
+							<li>
+								<h4 id="-beforeset_for"><code attr><i dom></i>-<i ambit></i>-beforeset_for</code></h4>
+								<p><u content></u> JavaScript</p>
+								<p>Código que se ejecuta antes del recorrido. Si se devuelve un valor, este reemplazará al valor original durante el recorrido</p>
+								<u params></u>
+								<ul>
+									<li>
+										<h4><code param>jgo</code></h4>
+										<p><u type></u> {$jgo}</p>
+										<p>Objeto $jgo que se está ejecutando</p>
+									</li>
+									<li>
+										<h4><code param>json</code></h4>
+										<p><u type></u> Object</p>
+										<p>Objeto recibido como parámetro de <a href="#setjson">setJSON</a></p>
+									</li>
+									<li>
+										<h4><code param>value</code></h4>
+										<p><u type></u> Any</p>
+										<p>Valor obtenido del objeto json</p>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<h4 id="-each"><code attr><i dom></i>-<i ambit></i>-each</code></h4>
+								<p><u content></u> JavaScript</p>
+								<p>* Obligatorio</p>
+								<p>Código que se ejecuta por cada item del recorrido. El valor devuelto es lo que se inserta al nodo con <a target="append" href="http://api.jquery.com/append/">.append()</a></p>
+								<u params></u>
+								<ul>
+									<li>
+										<h4><code param>jgo</code></h4>
+										<p><u type></u> {$jgo}</p>
+										<p>Objeto $jgo que se está ejecutando</p>
+									</li>
+									<li>
+										<h4><code param>json</code></h4>
+										<p><u type></u> Object</p>
+										<p>Objeto recibido como parámetro de <a href="#setjson">setJSON</a></p>
+									</li>
+									<li>
+										<h4><code param>value</code></h4>
+										<p><u type></u> Any</p>
+										<p>Valor obtenido del objeto json</p>
+									</li>
+									<li>
+										<h4><code param>index</code></h4>
+										<p><u type></u> Any</p>
+										<p>Índice del item actual del recorrido</p>
+									</li>
+									<li>
+										<h4><code param>item</code></h4>
+										<p><u type></u> Any</p>
+										<p>Item actual del recorrido</p>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<h4 id="-onset_for"><code attr><i dom></i>-<i ambit></i>-onset_for</code></h4>
+								<p><u content></u> JavaScript</p>
+								<p>Código que se ejecuta después del recorrido</p>
+								<u params></u>
+								<ul>
+									<li>
+										<h4><code param>jgo</code></h4>
+										<p><u type></u> {$jgo}</p>
+										<p>Objeto $jgo que se está ejecutando</p>
+									</li>
+									<li>
+										<h4><code param>json</code></h4>
+										<p><u type></u> Object</p>
+										<p>Objeto recibido como parámetro de <a href="#setjson">setJSON</a></p>
+									</li>
+									<li>
+										<h4><code param>value</code></h4>
+										<p><u type></u> Any</p>
+										<p>Valor obtenido del objeto json</p>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<h4 id="-offset_for"><code attr><i dom></i>-<i ambit></i>-offset_for</code></h4>
+								<p><u content></u> JavaScript</p>
+								<p>Código que se ejecuta si no se encuentra el valor</p>
+								<u params></u>
+								<ul>
+									<li>
+										<h4><code param>jgo</code></h4>
+										<p><u type></u> {$jgo}</p>
+										<p>Objeto $jgo que se está ejecutando</p>
+									</li>
+									<li>
+										<h4><code param>json</code></h4>
+										<p><u type></u> Object</p>
+										<p>Objeto recibido como parámetro de <a href="#setjson">setJSON</a></p>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<h4 id="-html"><code attr><i dom></i>-<i ambit></i>-html</code></h4>
+						<p><u content></u> Llave $joq</p>
+						<p>Inserta el valor obtenido como html al nodo actual.</p>
+						<p>Nodos dependientes:</p>
+						<ul>
+							<li>
+								<h4 id="-beforeset_html"><code attr><i dom></i>-<i ambit></i>-beforeset_html</code></h4>
+								<p><u content></u> JavaScript</p>
+								<p>Código que se ejecuta antes del recorrido. Si se devuelve un valor, este reemplazará al valor original durante el proceso</p>
+								<u params></u>
+								<ul>
+									<li>
+										<h4><code param>jgo</code></h4>
+										<p><u type></u> {$jgo}</p>
+										<p>Objeto $jgo que se está ejecutando</p>
+									</li>
+									<li>
+										<h4><code param>json</code></h4>
+										<p><u type></u> Object</p>
+										<p>Objeto recibido como parámetro de <a href="#setjson">setJSON</a></p>
+									</li>
+									<li>
+										<h4><code param>value</code></h4>
+										<p><u type></u> Any</p>
+										<p>Valor obtenido del objeto json</p>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<h4 id="-onset_html"><code attr><i dom></i>-<i ambit></i>-onset_html</code></h4>
+								<p><u content></u> JavaScript</p>
+								<p>Código que se ejecuta después del proceso</p>
+								<u params></u>
+								<ul>
+									<li>
+										<h4><code param>jgo</code></h4>
+										<p><u type></u> {$jgo}</p>
+										<p>Objeto $jgo que se está ejecutando</p>
+									</li>
+									<li>
+										<h4><code param>json</code></h4>
+										<p><u type></u> Object</p>
+										<p>Objeto recibido como parámetro de <a href="#setjson">setJSON</a></p>
+									</li>
+									<li>
+										<h4><code param>value</code></h4>
+										<p><u type></u> Any</p>
+										<p>Valor obtenido del objeto json</p>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<h4 id="-offset_html"><code attr><i dom></i>-<i ambit></i>-offset_html</code></h4>
+								<p><u content></u> JavaScript</p>
+								<p>Código que se ejecuta si no se encuentra el valor</p>
+								<u params></u>
+								<ul>
+									<li>
+										<h4><code param>jgo</code></h4>
+										<p><u type></u> {$jgo}</p>
+										<p>Objeto $jgo que se está ejecutando</p>
+									</li>
+									<li>
+										<h4><code param>json</code></h4>
+										<p><u type></u> Object</p>
+										<p>Objeto recibido como parámetro de <a href="#setjson">setJSON</a></p>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<h4 id="-text"><code attr><i dom></i>-<i ambit></i>-text</code></h4>
+						<p><u content></u> Llave $joq</p>
+						<p>Inserta el valor obtenido como texto al nodo actual.</p>
+						<p>Nodos dependientes:</p>
+						<ul>
+							<li>
+								<h4 id="-beforeset_text"><code attr><i dom></i>-<i ambit></i>-beforeset_text</code></h4>
+								<p><u content></u> JavaScript</p>
+								<p>Código que se ejecuta antes del recorrido. Si se devuelve un valor, este reemplazará al valor original durante el proceso</p>
+								<u params></u>
+								<ul>
+									<li>
+										<h4><code param>jgo</code></h4>
+										<p><u type></u> {$jgo}</p>
+										<p>Objeto $jgo que se está ejecutando</p>
+									</li>
+									<li>
+										<h4><code param>json</code></h4>
+										<p><u type></u> Object</p>
+										<p>Objeto recibido como parámetro de <a href="#setjson">setJSON</a></p>
+									</li>
+									<li>
+										<h4><code param>value</code></h4>
+										<p><u type></u> Any</p>
+										<p>Valor obtenido del objeto json</p>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<h4 id="-onset_text"><code attr><i dom></i>-<i ambit></i>-onset_text</code></h4>
+								<p><u content></u> JavaScript</p>
+								<p>Código que se ejecuta después del proceso</p>
+								<u params></u>
+								<ul>
+									<li>
+										<h4><code param>jgo</code></h4>
+										<p><u type></u> {$jgo}</p>
+										<p>Objeto $jgo que se está ejecutando</p>
+									</li>
+									<li>
+										<h4><code param>json</code></h4>
+										<p><u type></u> Object</p>
+										<p>Objeto recibido como parámetro de <a href="#setjson">setJSON</a></p>
+									</li>
+									<li>
+										<h4><code param>value</code></h4>
+										<p><u type></u> Any</p>
+										<p>Valor obtenido del objeto json</p>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<h4 id="-offset_text"><code attr><i dom></i>-<i ambit></i>-offset_text</code></h4>
+								<p><u content></u> JavaScript</p>
+								<p>Código que se ejecuta si no se encuentra el valor</p>
+								<u params></u>
+								<ul>
+									<li>
+										<h4><code param>jgo</code></h4>
+										<p><u type></u> {$jgo}</p>
+										<p>Objeto $jgo que se está ejecutando</p>
+									</li>
+									<li>
+										<h4><code param>json</code></h4>
+										<p><u type></u> Object</p>
+										<p>Objeto recibido como parámetro de <a href="#setjson">setJSON</a></p>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<h4 id="-value"><code attr><i dom></i>-<i ambit></i>-value</code></h4>
+						<p><u content></u> Llave $joq</p>
+						<p>Inserta el valor obtenido como value al nodo actual.</p>
+						<p>Nodos dependientes:</p>
+						<ul>
+							<li>
+								<h4 id="-beforeset_value"><code attr><i dom></i>-<i ambit></i>-beforeset_value</code></h4>
+								<p><u content></u> JavaScript</p>
+								<p>Código que se ejecuta antes del recorrido. Si se devuelve un valor, este reemplazará al valor original durante el proceso</p>
+								<u params></u>
+								<ul>
+									<li>
+										<h4><code param>jgo</code></h4>
+										<p><u type></u> {$jgo}</p>
+										<p>Objeto $jgo que se está ejecutando</p>
+									</li>
+									<li>
+										<h4><code param>json</code></h4>
+										<p><u type></u> Object</p>
+										<p>Objeto recibido como parámetro de <a href="#setjson">setJSON</a></p>
+									</li>
+									<li>
+										<h4><code param>value</code></h4>
+										<p><u type></u> Any</p>
+										<p>Valor obtenido del objeto json</p>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<h4 id="-onset_value"><code attr><i dom></i>-<i ambit></i>-onset_value</code></h4>
+								<p><u content></u> JavaScript</p>
+								<p>Código que se ejecuta después del proceso</p>
+								<u params></u>
+								<ul>
+									<li>
+										<h4><code param>jgo</code></h4>
+										<p><u type></u> {$jgo}</p>
+										<p>Objeto $jgo que se está ejecutando</p>
+									</li>
+									<li>
+										<h4><code param>json</code></h4>
+										<p><u type></u> Object</p>
+										<p>Objeto recibido como parámetro de <a href="#setjson">setJSON</a></p>
+									</li>
+									<li>
+										<h4><code param>value</code></h4>
+										<p><u type></u> Any</p>
+										<p>Valor obtenido del objeto json</p>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<h4 id="-offset_value"><code attr><i dom></i>-<i ambit></i>-offset_value</code></h4>
+								<p><u content></u> JavaScript</p>
+								<p>Código que se ejecuta si no se encuentra el valor</p>
+								<u params></u>
+								<ul>
+									<li>
+										<h4><code param>jgo</code></h4>
+										<p><u type></u> {$jgo}</p>
+										<p>Objeto $jgo que se está ejecutando</p>
+									</li>
+									<li>
+										<h4><code param>json</code></h4>
+										<p><u type></u> Object</p>
+										<p>Objeto recibido como parámetro de <a href="#setjson">setJSON</a></p>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<h4 id="-check"><code attr><i dom></i>-<i ambit></i>-check</code></h4>
+						<p><u content></u> Llave $joq</p>
+						<p>Activa o desactiva la propiedad <code>checked</code> del nodo actual, si el <code>value</code> es igual o no al valor obtenido.</p>
+						<p>Nodos dependientes:</p>
+						<ul>
+							<li>
+								<h4 id="-beforeset_check"><code attr><i dom></i>-<i ambit></i>-beforeset_check</code></h4>
+								<p><u content></u> JavaScript</p>
+								<p>Código que se ejecuta antes del recorrido. Si se devuelve un valor, este reemplazará al valor original durante el proceso</p>
+								<u params></u>
+								<ul>
+									<li>
+										<h4><code param>jgo</code></h4>
+										<p><u type></u> {$jgo}</p>
+										<p>Objeto $jgo que se está ejecutando</p>
+									</li>
+									<li>
+										<h4><code param>json</code></h4>
+										<p><u type></u> Object</p>
+										<p>Objeto recibido como parámetro de <a href="#setjson">setJSON</a></p>
+									</li>
+									<li>
+										<h4><code param>value</code></h4>
+										<p><u type></u> Any</p>
+										<p>Valor obtenido del objeto json</p>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<h4 id="-onset_check"><code attr><i dom></i>-<i ambit></i>-onset_check</code></h4>
+								<p><u content></u> JavaScript</p>
+								<p>Código que se ejecuta después del proceso</p>
+								<u params></u>
+								<ul>
+									<li>
+										<h4><code param>jgo</code></h4>
+										<p><u type></u> {$jgo}</p>
+										<p>Objeto $jgo que se está ejecutando</p>
+									</li>
+									<li>
+										<h4><code param>json</code></h4>
+										<p><u type></u> Object</p>
+										<p>Objeto recibido como parámetro de <a href="#setjson">setJSON</a></p>
+									</li>
+									<li>
+										<h4><code param>value</code></h4>
+										<p><u type></u> Any</p>
+										<p>Valor obtenido del objeto json</p>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<h4 id="-offset_check"><code attr><i dom></i>-<i ambit></i>-offset_check</code></h4>
+								<p><u content></u> JavaScript</p>
+								<p>Código que se ejecuta si no se encuentra el valor</p>
+								<u params></u>
+								<ul>
+									<li>
+										<h4><code param>jgo</code></h4>
+										<p><u type></u> {$jgo}</p>
+										<p>Objeto $jgo que se está ejecutando</p>
+									</li>
+									<li>
+										<h4><code param>json</code></h4>
+										<p><u type></u> Object</p>
+										<p>Objeto recibido como parámetro de <a href="#setjson">setJSON</a></p>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<h4 id="-attr"><code attr><i dom></i>-<i ambit></i>-attr</code></h4>
+						<p><u content></u> Atributo + Llave $joq</p>
+						<p>Asigna el valor obtenido al atributo especificado.</p>
+						<p>Formato del contenido: {attr}={llave}.<br>
+							Si no contiene el caracter <code>=</code>, la llave y el atributo serán el contenido: "name" equivale a "name=name"<br>
+							Si el contenido es "name=persona.name". El valor de json.persona.name se asignará al atributo [name]</p>
+						<p>Nodos dependientes:</p>
+						<ul>
+							<li>
+								<h4 id="-beforeset_attr"><code attr><i dom></i>-<i ambit></i>-beforeset_attr</code></h4>
+								<p><u content></u> JavaScript</p>
+								<p>Código que se ejecuta antes del recorrido. Si se devuelve un valor, este reemplazará al valor original durante el proceso</p>
+								<u params></u>
+								<ul>
+									<li>
+										<h4><code param>jgo</code></h4>
+										<p><u type></u> {$jgo}</p>
+										<p>Objeto $jgo que se está ejecutando</p>
+									</li>
+									<li>
+										<h4><code param>json</code></h4>
+										<p><u type></u> Object</p>
+										<p>Objeto recibido como parámetro de <a href="#setjson">setJSON</a></p>
+									</li>
+									<li>
+										<h4><code param>value</code></h4>
+										<p><u type></u> Any</p>
+										<p>Valor obtenido del objeto json</p>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<h4 id="-onset_attr"><code attr><i dom></i>-<i ambit></i>-onset_attr</code></h4>
+								<p><u content></u> JavaScript</p>
+								<p>Código que se ejecuta después del proceso</p>
+								<u params></u>
+								<ul>
+									<li>
+										<h4><code param>jgo</code></h4>
+										<p><u type></u> {$jgo}</p>
+										<p>Objeto $jgo que se está ejecutando</p>
+									</li>
+									<li>
+										<h4><code param>json</code></h4>
+										<p><u type></u> Object</p>
+										<p>Objeto recibido como parámetro de <a href="#setjson">setJSON</a></p>
+									</li>
+									<li>
+										<h4><code param>value</code></h4>
+										<p><u type></u> Any</p>
+										<p>Valor obtenido del objeto json</p>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<h4 id="-offset_attr"><code attr><i dom></i>-<i ambit></i>-offset_attr</code></h4>
+								<p><u content></u> JavaScript</p>
+								<p>Código que se ejecuta si no se encuentra el valor</p>
+								<u params></u>
+								<ul>
+									<li>
+										<h4><code param>jgo</code></h4>
+										<p><u type></u> {$jgo}</p>
+										<p>Objeto $jgo que se está ejecutando</p>
+									</li>
+									<li>
+										<h4><code param>json</code></h4>
+										<p><u type></u> Object</p>
+										<p>Objeto recibido como parámetro de <a href="#setjson">setJSON</a></p>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
+			<section>
+				<h3>Nodos XML</h3>
+				<p>En esta versión no existen nodos XML predefinidos</p>
+				<ul>
+				</ul>
+			</section>
+			<section>
+				<h3>Nodos TEXT</h3>
+				<p>
+				</p>
+				<ul>
+					<li>
+						<h4 id="-innerdefault"><code attr><i dom></i>-<i ambit></i>-innerdefault</code></h4>
+						<p><u content></u> html</p>
+						<p>Inserta el contenido del atributo como html en el nodo.</p>
+					</li>
+					<li>
+						<h4 id="-innertext"><code attr><i dom></i>-<i ambit></i>-innertext</code></h4>
+						<p><u content></u> None</p>
+						<p>Inserta el texto obtenido como texto en el nodo.</p>
+					</li>
+					<li>
+						<h4 id="-innerhtml"><code attr><i dom></i>-<i ambit></i>-innerhtml</code></h4>
+						<p><u content></u> None</p>
+						<p>Inserta el texto obtenido como html en el nodo.</p>
+					</li>
+					<li>
+						<h4 id="-innervalue"><code attr><i dom></i>-<i ambit></i>-innervalue</code></h4>
+						<p><u content></u> None</p>
+						<p>Inserta el texto obtenido como value en el nodo.</p>
+					</li>
+				</ul>
+			</section>
+			<section>
+				<h3>Funciones y propiedades</h3>
+				<p>A continuación se detallan las funciones y propiedades de la clase $jgo</p>
+				<ul>
+					<li>
+						<hr>
+						<h4 id="jgo"><code var>$jgo</code></h4>
+						<p><u type></u> Function</p>
+						<p><u info></u> Crea un objeto $jgo con las configuraciones que se reciben en los parámetros</p>
+						<u params></u>
+						<ul>
+							<li>
+								<h4 id="opts"><code param>opts</code></h4>
+								<p><u type></u> String | Object</p>
+								<p>Opciones de configuración del objeto $jgo. Si se recibe un String, este utilizará como el nombre del <a href="#ambit">ámbito</a></p>
+								<p>Valores por defecto en <a href="#default_opts">$jgo.default_opts</a></p>
+								<p><b>Nota</b>: Si se cumplen las siguientes condiciones, se retornará un objeto $jgo previamente configurado y guardado:</p>
+								<ul>
+									<li>Ser el único parámetro recibido</li>
+									<li>Este parámetro debe ser de tipo String</li>
+									<li>Que exista un objeto $jgo previamente guardado con la llave igual a este parámetro</li>
+								</ul>
+							</li>
+							<li>
+								<h4 id="cfg"><code param>cfg</code></h4>
+								<p><u type></u> String | Object</p>
+								<p>Opciones de configuración de <a target="$.ajax" href="http://api.jquery.com/jquery.ajax/">$.ajax</a>. Si se recibe un String, este utilizará como la url de la configuración</p>
+								<p>Valores por defecto en <a href="#default_cfg">$jgo.default_cfg</a></p>
+							</li>
+							<li>
+								<h4 id="save"><code param>save</code></h4>
+								<p><u type></u> Boolean | String</p>
+								<p>Si el valor equivale a <code>true</code>, el objeto $jgo se configura y se guarda para su uso porterior</p>
+								<p>Si el valor es un string, la llave que se usará para guardar y porteriormente obtener el objeto $jgo, será este valor.<br>
+									De lo contrario, se usará el nombre del ámbito en <a href="#opts">opts</a></p>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<hr>
+						<h4 id="default_opts"><code var>$jgo.default_opts</code></h4>
+						<p><u type></u> Object</p>
+						<p><u info></u> Almacena el valor por defecto para el parámetro <a href="#opts">opts</a> de la función <a href="#jgo">$jgo</a></p>
+						<u values></u>
+						<ul>
+							<li>
+								<h4 id="dom"><code value>dom</code></h4>
+								<p><u type></u> String</p>
+								<p><u default></u> "jgo"</p>
+								<p>El nombre de dominio determina la primera parte de los atributos de dominio y de ámbito. No se recomienda especificar este dato si no se conoce a profundidad del funcionamiento de $jgo</p>
+								<p>Digite un nombre de dominio para los atributos de este documento: <input id="inputdom" type="text" onkeyup="$(this).change()" onchange="$('[dom]').html(this.value && (/^[-_0-9a-zA-Z]*$/).test(this.value)?this.value.toLowerCase():'jgo')" placeholder="jgo" style="width: 100px;"></p>
+								<p>Ejemplo atributo de dominio: <code attr><i dom></i>-name</code></p>
+							</li>
+							<li>
+								<h4 id="ambit"><code value>ambit</code></h4>
+								<p><u type></u> String</p>
+								<p><u default></u> ""</p>
+								<p>El nombre de ámbito determina la segunda parte de los atributos de ámbito. Es obligatorio especificar este dato por cada objeto $jgo</p>
+								<p>Digite un nombre de ámbito para los atributos de este documento: <input id="inputambit" type="text" onkeyup="$(this).change()" onchange="$('[ambit]').html(this.value && (/^[-_0-9a-zA-Z]*$/).test(this.value)?this.value.toLowerCase():'<b style=color:red;>#</b>')" placeholder="#" style="width: 100px;"></p>
+								<p>Ejemplo atributo de ámbito: <code attr><i dom></i>-<i ambit></i>-name</code></p>
+							</li>
+							<li>
+								<h4 id="root"><code value>root</code></h4>
+								<p><u type></u> <a target="$.fn.filter" href="http://api.jquery.com/filter/">Filtro jQuery</a></p>
+								<p><u default></u> document</p>
+								<p>Define el o los elementos del documento de donde se obtendrán todos los nodos requeridos para el objeto $jgo</p>
+							</li>
+							<li>
+								<h4 id="validate"><code value>validate</code></h4>
+								<p><u type></u> Function | Boolean</p>
+								<p><u default></u> False</p>
+								<p>Si es <code>false</code>, no realiza la validación de los inputs.<br>Si es <code>true</code>, compara la cantidad de inputs con la cantidad de inputs válidos según el <a href="#validfilter">filtro</a>.<br>
+									Se continua solo si estos valores son iguales</p>
+								<p>Si es una función la ejecuta, y si devuelve <code>true</code> se continúa. Recibe como único parámetro al objeto <code param>$jgo</code></p>
+							</li>
+							<li>
+								<h4 id="validfilter"><code value>validFilter</code></h4>
+								<p><u type></u> <a target="$.fn.filter" href="http://api.jquery.com/filter/">Filtro jQuery</a></p>
+								<p><u default></u> Function()...</p>
+								<p></p>
+							</li>
+							<li>
+								<h4 id="enabledfilter"><code value>enabledFilter</code></h4>
+								<p><u type></u> <a target="$.fn.filter" href="http://api.jquery.com/filter/">Filtro jQuery</a></p>
+								<p><u default></u> ":enabled"</p>
+								<p></p>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<hr>
+						<h4 id="default_cfg"><code var>$jgo.default_cfg</code></h4>
+						<p><u type></u> Object</p>
+						<p><u info></u> Almacena el valor por defecto para el parámetro <a href="#cfg">cfg</a> de la función <a href="#jgo">$jgo</a></p>
+						<u values></u>
+						<ul>
+							<li>
+								<h4 id="cfg-url"><code value>url</code></h4>
+								<p><u default></u> window.location.href</p>
+								<p></p>
+							</li>
+							<li>
+								<h4 id="cfg-method"><code value>method</code></h4>
+								<p><u default></u> "POST"</p>
+								<p></p>
+							</li>
+							<li>
+								<h4 id="cfg-contenttype"><code value>contentType</code></h4>
+								<p><u type></u> String | Boolean</p>
+								<p><u default></u> False</p>
+								<p>Tipo de contenido que se envía al servidor</p>
+								<p>En caso de utilizar otro tipo de contenido, el valor recomendado es: "application/x-www-form-urlencoded".<br>
+									En este caso debe cambiar el valor de <a href="#cfg-processdata">processData</a> a <code>true</code></p>
+							</li>
+							<li>
+								<h4 id="cfg-processdata"><code value>processData</code></h4>
+								<p><u type></u> Boolean</p>
+								<p><u default></u> False</p>
+								<p>Procesar datos: Si es <code>false</code> se guardarán los datos en un objeto <a href="">FormData</a></p>
+							</li>
+							<li>
+								<h4 id="cfg-beforesend"><code value>beforeSend</code></h4>
+								<p><u type></u> Function</p>
+								<p><u default></u> Function()...</p>
+								<p>Se recomienda <mark>no reemplazar esta propiedad</mark>, debido a que el funcionamiento de $jgo lo requiere</p>
+							</li>
+							<li>
+								<h4 id="cfg-complete"><code value>complete</code></h4>
+								<p><u type></u> Function</p>
+								<p><u default></u> Function()...</p>
+								<p>Se recomienda <mark>no reemplazar esta propiedad</mark>, debido a que el funcionamiento de $jgo lo requiere</p>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<hr>
+						<h4 id="jsonnodes"><code var>$jgo.jsonNodes</code></h4>
+						<p><u type></u> Object</p>
+						<p><u info></u> Almacena las configuraciones que se utilizan en la ejecución de cada <a href="#nodosjson">nodo JSON</a></p>
+						<p>Las llaves en este objeto son: <a href="#-for"><code value>for</code></a> <a href="#-html"><code value>html</code></a> <a href="#-text"><code value>text</code></a> <a href="#-value"><code value>value</code></a> <a href="#-check"><code value>check</code></a> <a href="#-attr"><code value>attr</code></a></p>
+						<p>Puede desarrollar sus propios nodos siguiendo la siguiente estructura</p>
+						<p>Para cada nodo, la llave es el parametro que recibe <a href="#attr">$jgo.fn.attr</a> para generar el atributo correspondiente y el valor es un objeto que almacena las siguientes opciones:</p>
+						<ul>
+							<li>
+								<h4 id="jsonnodes-fn"><code value>fn</code></h4>
+								<p><u type></u> Function()...</p>
+								<p>Función que se ejecuta por cada nodo o elemento encontrado, al cual se accede a través de <code var>this</code>.</p>
+								<u params></u>
+								<ul>
+									<li>
+										<h4><code param>jgo</code></h4>
+										<p><u type></u> {$jgo}</p>
+										<p>Objeto $jgo que esta haciendo el llamado</p>
+									</li>
+									<li>
+										<h4><code param>json</code></h4>
+										<p><u type></u> Object</p>
+										<p>Objeto json que se está utilizando</p>
+									</li>
+									<li>
+										<h4><code param>attr</code></h4>
+										<p><u type></u> String</p>
+										<p>Atributo completo del nodo JSON</p>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<h4 id="jsonnodes-empty"><code value>noempty</code></h4>
+								<p><u type></u> Boolean</p>
+								<p>Si el valor es <code>true</code>, no se permite que el atributo del nodo JSON sea vacío. Si es <code>false</code>, el atributo puede ser vacío</p>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<hr>
+						<h4 id="xmlnodes"><code var>$jgo.xmlNodes</code></h4>
+						<p><u type></u> Object</p>
+						<p><u info></u> Almacena las configuraciones que se utilizan en la ejecución de cada <a href="#nodosxml">nodo XML</a></p>
+						<p>En esta versión no se desarrollaron nodos XML.</p>
+						<p>Puede desarrollar sus propios nodos siguiendo la siguiente estructura</p>
+						<p>Para cada nodo, la llave es el parametro que recibe <a href="#attr">$jgo.fn.attr</a> para generar el atributo correspondiente y el valor es un objeto que almacena las siguientes opciones:</p>
+						<ul>
+							<li>
+								<h4 id="xmlnodes-fn"><code value>fn</code></h4>
+								<p><u type></u> Function()...</p>
+								<p>Función que se ejecuta por cada nodo o elemento encontrado, al cual se accede a través de <code var>this</code>.</p>
+								<u params></u>
+								<ul>
+									<li>
+										<h4><code param>jgo</code></h4>
+										<p><u type></u> {$jgo}</p>
+										<p>Objeto $jgo que esta haciendo el llamado</p>
+									</li>
+									<li>
+										<h4><code param>xml</code></h4>
+										<p><u type></u> {Document}</p>
+										<p>Documento XML que se está utilizando</p>
+									</li>
+									<li>
+										<h4><code param>attr</code></h4>
+										<p><u type></u> String</p>
+										<p>Atributo completo del nodo XML</p>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<h4 id="xmlnodes-empty"><code value>noempty</code></h4>
+								<p><u type></u> Boolean</p>
+								<p>Si el valor es <code>true</code>, no se permite que el atributo del nodo XML sea vacío. Si es <code>false</code>, el atributo puede ser vacío</p>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<hr>
+						<h4 id="textnodes"><code var>$jgo.textNodes</code></h4>
+						<p><u type></u> Object</p>
+						<p><u info></u> Almacena las configuraciones que se utilizan en la ejecución de cada <a href="#nodosxml">nodo XML</a></p>
+						<p>En esta versión no se desarrollaron nodos XML.</p>
+						<p>Puede desarrollar sus propios nodos siguiendo la siguiente estructura</p>
+						<p>Para cada nodo, la llave es el parametro que recibe <a href="#attr">$jgo.fn.attr</a> para generar el atributo correspondiente y el valor es un objeto que almacena las siguientes opciones:</p>
+						<ul>
+							<li>
+								<h4 id="textnodes-fn"><code value>fn</code></h4>
+								<p><u type></u> Function()...</p>
+								<p>Función que se ejecuta por cada nodo o elemento encontrado, al cual se accede a través de <code var>this</code>.</p>
+								<u params></u>
+								<ul>
+									<li>
+										<h4><code param>jgo</code></h4>
+										<p><u type></u> {$jgo}</p>
+										<p>Objeto $jgo que esta haciendo el llamado</p>
+									</li>
+									<li>
+										<h4><code param>text</code></h4>
+										<p><u type></u> String</p>
+										<p>Texto que se está utilizando</p>
+									</li>
+									<li>
+										<h4><code param>attr</code></h4>
+										<p><u type></u> String</p>
+										<p>Atributo completo del nodo TEXT</p>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<h4 id="textnodes-empty"><code value>noempty</code></h4>
+								<p><u type></u> Boolean</p>
+								<p>Si el valor es <code>true</code>, no se permite que el atributo del nodo TEXT sea vacío. Si es <code>false</code>, el atributo puede ser vacío</p>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<hr>
+						<h4>Funciones y propiedades del objeto</h4>
+						<p>
+						</p>
+						<ul>
+							<li>
+								<hr>
+								<h4 id="attrdom"><code var>$jgo.fn.attrdom</code></h4>
+								<p><u type></u> Function</p>
+								<p>Devuelve el atributo correspondiente para los nodos de dominio. Ejemplo: para el nombre "name", si el <a href="#dom">dominio</a> es "jgo", el atributo de dominio es "jgo-name"</p>
+								<u params></u>
+								<ul>
+									<li>
+										<h4><code param>attr</code></h4>
+										<p><u type></u> String</p>
+										<p>Nombre del nodo de dominio</p>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<hr>
+								<h4 id="nodedom"><code var>$jgo.fn.nodedom</code></h4>
+								<p><u type></u> Function</p>
+								<p>Devuelve los nodos de dominio, a partir del atributo devuelto por <a href="#attrdom">$jgo.fn.attrdom</a></p>
+								<u params></u>
+								<ul>
+									<li>
+										<h4><code param>attr</code></h4>
+										<p><u type></u> String</p>
+										<p>Nombre del nodo de dominio</p>
+									</li>
+									<li>
+										<h4><code param>noempty</code></h4>
+										<p><u type></u> Boolean</p>
+										<p>Si es <code>true</code>, solo devuelve los nodos con el atributo no vacío</p>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<hr>
+								<h4 id="attr"><code var>$jgo.fn.attr</code></h4>
+								<p><u type></u> Function</p>
+								<p>Devuelve el atributo correspondiente para los nodos de ámbito. Ejemplo: para el nombre "name", si el <a href="#dom">dominio</a> es "jgo" y el <a href="#ambit">ámbito</a> es "form", el atributo de ámbito es "jgo-form-name"</p>
+								<u params></u>
+								<ul>
+									<li>
+										<h4><code param>attr</code></h4>
+										<p><u type></u> String</p>
+										<p>Nombre del nodo de ámbito</p>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<hr>
+								<h4 id="node"><code var>$jgo.fn.node</code></h4>
+								<p><u type></u> Function</p>
+								<p>Devuelve los nodos de ámbito, a partir del atributo devuelto por <a href="#attr">$jgo.fn.attr</a></p>
+								<u params></u>
+								<ul>
+									<li>
+										<h4><code param>attr</code></h4>
+										<p><u type></u> String</p>
+										<p>Nombre del nodo de ámbito</p>
+									</li>
+									<li>
+										<h4><code param>noempty</code></h4>
+										<p><u type></u> Boolean</p>
+										<p>Si es <code>true</code>, solo devuelve los nodos con el atributo no vacío</p>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<hr>
+								<h4 id="getdominputs"><code var>$jgo.fn.getDomInputs</code></h4>
+								<p><u type></u> Function</p>
+								<p>Devuelve los <code>input</code>, <code>select</code> y <code>textarea</code> del dominio</p>
+								<u params></u>
+								<ul>
+									<li>
+										<h4><code param>valids</code></h4>
+										<p><u type></u> Boolean</p>
+										<p>Si es <code>true</code>, solo devuelve los nodos válidos</p>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<hr>
+								<h4 id="getinputs"><code var>$jgo.fn.getInputs</code></h4>
+								<p><u type></u> Function</p>
+								<p>Devuelve los <code>input</code>, <code>select</code> y <code>textarea</code> del ámbito</p>
+								<u params></u>
+								<ul>
+									<li>
+										<h4><code param>valids</code></h4>
+										<p><u type></u> Boolean</p>
+										<p>Si es <code>true</code>, solo devuelve los nodos válidos</p>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<hr>
+								<h4 id="setjson"><code var>$jgo.fn.setJSON</code></h4>
+								<p><u type></u> Function</p>
+								<p>Procesa el objeto ejecutando todos los nodos JSON</p>
+								<u params></u>
+								<ul>
+									<li>
+										<h4><code param>json</code></h4>
+										<p><u type></u> Object</p>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<hr>
+								<h4 id="setxml"><code var>$jgo.fn.setXML</code></h4>
+								<p><u type></u> Function</p>
+								<p>Procesa el documento XML ejecutando todos los nodos XML</p>
+								<u params></u>
+								<ul>
+									<li>
+										<h4><code param>xml</code></h4>
+										<p><u type></u> {Document}</p>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<hr>
+								<h4 id="settext"><code var>$jgo.fn.setTEXT</code></h4>
+								<p><u type></u> Function</p>
+								<p>Procesa el texto ejecutando todos los nodos TEXT</p>
+								<u params></u>
+								<ul>
+									<li>
+										<h4><code param>text</code></h4>
+										<p><u type></u> String</p>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<hr>
+								<h4 id="formdata"><code var>$jgo.fn.formData</code></h4>
+								<p><u type></u> Function</p>
+								<p>Devuelve los datos del ámbito, listos para ser enviados por ajax. Si la configuración ya tiene datos, estos son agregados al resultados devuelto.</p>
+								<u params></u>
+								<ul>
+									<li>
+										<h4><code param>config</code></h4>
+										<p><u type></u> Object</p>
+										<p>Configuración de ajax</p>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<hr>
+								<h4 id="go"><code var>$jgo.fn.go</code></h4>
+								<p><u type></u> Function</p>
+								<p>Ejecuta el proceso de $jgo. Desde la recolección del FormData hasta la ejecución de los nodos.</p>
+							</li>
+							<li>
+								<hr>
+								<h4 id="clonefor"><code var>$jgo.fn.cloneFor</code></h4>
+								<p><u type></u> Function</p>
+								<p>Crea una copia del objeto $jgo actual y le asigna un nuevo root</p>
+								<u params></u>
+								<ul>
+									<li>
+										<h4><code param>root</code></h4>
+										<p>Raíz del ámbito. Ver <a href="#root">root</a></p>
+									</li>
+									<li>
+										<h4><code param>save</code></h4>
+										<p>Guardar el ámbito. Ver <a href="#save">save</a></p>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
+			<section>
+				<h3>Dependencias</h3>
+				<ul>
+					<li><a target="jquery" href="https://jquery.com/download/">jQuery</a></li>
+					<li><a target="ymv" href="https://github.com/yordanny90/ymv">ymv.joq 1.4</a></li>
+					<li><a target="ymv" href="https://github.com/yordanny90/ymv">ymv.jquery_util 1.4</a></li>
+				</ul>
+			</section>
+			<section style="height:80%;">
+				<h2 id="contact">Contacto</h2>
+				<dl>
+					<dt>Desarrollador</dt><dd>Yordanny Mejías V.</dd>
+					<dt>E-Mail</dt><dd><a href="mailto:yordanny90@gmail.com">yordanny90@gmail.com</a></dd>
+				</dl>
+			</section>
+		</article>
+		<script>
+			$(function($){
+				$('#inputambit,#inputdom').change();
+			});
+		</script>
+	</body>
+</html>
