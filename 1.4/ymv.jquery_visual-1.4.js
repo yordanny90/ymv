@@ -100,15 +100,15 @@ $(function($){
 });
 
 $(function(){
-	var $listTransformStyle=[
+	var listTransformStyle=[
 		'transform',
 		'WebkitTransform',
 		'msTransform',
 	];
-	$transformStyle='transform';
-	$.each($listTransformStyle,function(i,e){
+	var transformStyle='transform';
+	$.each(listTransformStyle,function(i,e){
 		if(typeof document.body.style[e]!='undefined'){
-			$transformStyle=e;
+			transformStyle=e;
 		}
 	});
 	var $scaleRegex=/scale[(]([-]?[0-9]*[.]?[0-9]*)[,]?[ ]?([-]?[0-9]*[.]?[0-9]*)?[)]/;
@@ -121,10 +121,10 @@ $(function(){
 				$v+='('+x+')';
 			}
 			this.each(function(i,e){
-				e.style[$transformStyle]=e.style[$transformStyle].replace($(e).transformScale()?$scaleRegex:'',$v);
+				e.style[transformStyle]=e.style[transformStyle].replace($(e).transformScale()?$scaleRegex:'',$v);
 			});
 		}
-		var $sc=this[0].style[$transformStyle].match($scaleRegex);
+		var $sc=this[0].style[transformStyle].match($scaleRegex);
 		if($sc) $sc.shift();
 		return $sc;
 	};
@@ -133,10 +133,10 @@ $(function(){
 		if(typeof deg=='number'){
 			var $v='rotate('+deg+'deg)';
 			this.each(function(i,e){
-				e.style[$transformStyle]=e.style[$transformStyle].replace($(e).transformRotate()?$rotateRegex:'',$v);
+				e.style[transformStyle]=e.style[transformStyle].replace($(e).transformRotate()?$rotateRegex:'',$v);
 			});
 		}
-		var $sc=this[0].style[$transformStyle].match($rotateRegex);
+		var $sc=this[0].style[transformStyle].match($rotateRegex);
 		if($sc) $sc.shift();
 		return $sc;
 	};
