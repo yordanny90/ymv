@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Prueba JFORM</title>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script src="ymv.jform-1.0.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+	$.jform_config('test', {
+			oninvalid: console.log,
+			onnotmodified: console.log,
+			onnocontent: console.log,
+			onerror: console.log,
+			ontimeout: console.log,
+			onabort: console.log,
+			onparseerror: console.log,
+			oncomplete: function(xhr, data, status){
+				var party=$(this.party).css('background-color', 'lightgreen');
+				$(this).css('background-color', 'red');
+				setTimeout(function(){
+					party.css('background-color', '');
+				}, 1500);
+			},
+			onjson: console.log,
+			onxml: console.log,
+			ontext: console.log,
+		}
+	);
+	$.jform_request('test', {
+		method: 'POST',
+		url: '/print_vars.php',
+		contentType: 'multipart/form-data'
+	});
+	$.jbind('value', function(data, odata){
+		if(typeof data!='undefined'){
+			$(this).val(data);
+		}
+	});
+	$.jbind('innerText', function(data, odata){
+		if(typeof data=='string'){
+			$(this).text(data);
+		}
+	});
+	$.jbind('innerHtml', function(data, odata){
+		if(typeof data=='string'){
+			$(this).html(data);
+		}
+	});
+</script>
+<form jform="test" jform-party="test1" jform-jbind="test1">
+	<fieldset>
+		<legend>FORM "test" Party: test1</legend>
+		<label jbind="">input1: <input type="text" name="input1"></label>
+		<input type="submit" value="Submit">
+	</fieldset>
+	<div jbind="test1" jbind-type="innerHtml" jbind-json="return data.text;" jbind-text>Respuesta</div>
+</form>
+<div jform="test" jform-party="test1" jform-jbind="test1">
+	<fieldset>
+		<legend>DIV "test" Party: test1</legend>
+		<label>input2: <input type="text" name="input2"></label>
+		<input jform-onclick="test" type="button" value="jform:test">
+	</fieldset>
+</div>
+<hr>
+<form jform="test" jform-party="test2" action="data:text/xml,<rss version='2.0'><channel><title>RSS Title</title></channel></rss>" jform-jbind="test">
+	<fieldset>
+		<legend>FORM "test" Party: test2</legend>
+		<label>Input 1 <input type="text" name="input1"></label>
+		<div jform="test" jform-party="test1" jform-jbind="test1">
+			<fieldset>
+				<legend>DIV "test" Party: test1</legend>
+				<label>Input 2 <input type="text" name="input2"></label>
+				<input jform-onclick="test" type="button" value="jform:test">
+				<input type="submit" value="submit">
+			</fieldset>
+		</div>
+		<input type="submit" value="submit" jbind="test" jbind-xml="return $(data).children('rss').children('channel').text()" jbind-before="console.log(arguments)">
+	</fieldset>
+</form>
+<form jform="test" jform-party="test2">
+	<fieldset>
+		<legend>FORM "test" Party: test2</legend>
+		<label>Input 1 <input type="text" name="input1"></label>
+		<input jform-onclick="test" type="button" value="jform:test">
+		<input type="submit" value="submit">
+	</fieldset>
+</form>
+</body>
+</html>
